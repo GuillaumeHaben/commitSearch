@@ -32,7 +32,7 @@ def main():
             # if len(os.listdir(os.path.join(resultsPath, directory))) > 1:
             #     continue
             sourceGraphFilePath = os.path.join(resultsPath, directory, "sourcegraphsearch.json")
-            if not os.path.isfile(sourceGraphFilePath):
+            if not os.path.isfile(sourceGraphFilePath) or os.path.getsize(sourceGraphFilePath) == 0:
                 continue
             with open(sourceGraphFilePath) as report:
                 data = json.load(report)
@@ -60,7 +60,6 @@ def main():
                             commit = result["commit"]["oid"]
                             url = "https://github.com/" + projectName + "/commit/" + commit
                             comment = getInterestingLinesFromMessage("flaky", messageValue)
-                            
                             if not os.path.isfile(os.path.join(resultsPath, directory, commit) + ".json"):
                                 queryGitHub(projectName, commit, directory)
 
